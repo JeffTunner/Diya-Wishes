@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  overflow: hidden;
+  color: #ffe9b8;
+  background: radial-gradient(ellipse at 50% 110%, #3d1604 0%, #170a2b 45%, #05020d 100%);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Diya flame + glow: off until the .lit class is on the root */
+.flame { transform-box: fill-box; transform-origin: 50% 100%; transform: scale(.2); opacity: 0; transition: transform .6s, opacity .4s; }
+.glow { opacity: 0; transition: opacity .8s; }
+.lit .flame { transform: scale(1); opacity: 1; animation: flicker 1.4s ease-in-out infinite .6s; }
+.lit .glow { opacity: 1; animation: pulse 2.2s ease-in-out infinite; }
+
+@keyframes flicker {
+  0%, 100% { transform: scale(1, 1) rotate(0); }
+  25% { transform: scale(.96, 1.06) rotate(-2deg); }
+  50% { transform: scale(1.03, .95) rotate(1.5deg); }
+  75% { transform: scale(.97, 1.04) rotate(-1deg); }
+}
+@keyframes pulse { 0%, 100% { opacity: .75; } 50% { opacity: 1; } }
+
+/* Lantern: rises from the diya, then App triggers a firework on animation end */
+.lantern { position: fixed; left: 50%; bottom: 26vh; z-index: 20; animation: rise 4.2s cubic-bezier(.2, .6, .3, 1) forwards; }
+.lantern-body {
+  width: 7.5rem; padding: 1.1rem .75rem; text-align: center; font-size: .8rem; font-weight: 600;
+  color: #4a1d00; word-break: break-word; border-radius: 1.2rem 1.2rem .8rem .8rem;
+  background: linear-gradient(#ffd166, #ff8c1a); box-shadow: 0 0 30px 8px rgba(255, 160, 40, .6);
+}
+@keyframes rise {
+  0% { transform: translate(-50%, 0) scale(.4); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), -52vh) scale(1); opacity: 1; }
+}
+.fade-in { animation: fadein .6s ease-out; }
+@keyframes fadein { from { opacity: 0; transform: translateY(8px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lit .flame, .lit .glow { animation: none; }
+}
